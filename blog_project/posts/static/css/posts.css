@@ -1,0 +1,9 @@
+
+body {
+    background: #f1f5f9;
+    font-family: 'Inter', sans-serif;
+}
+.post-card{
+    background-color: #ffffff;
+    border-radius: 1rem;
+}

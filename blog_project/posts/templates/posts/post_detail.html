@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,18 +7,12 @@
     <title>{{ post.title }} - Blog Post</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            background: #f1f5f9;
-            font-family: 'Inter', sans-serif;
-        }
         .post-card {
-            background-color: #ffffff;
-            border-radius: 1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .post-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-6px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
         .post-header {
             background-color: #f5f7ff;
@@ -30,20 +25,31 @@
     </style>
 </head>
 <body>
-
+    {% include 'includes/header.html' %}
     <div class="container mx-auto px-4 py-8">
-        <div class="post-card p-6 mb-8">
-            <div class="post-header rounded-t-lg">
+        <div class="post-card overflow-hidden">
+            <div class="post-header">
                 <h1 class="text-4xl font-semibold text-indigo-600">{{ post.title }}</h1>
                 <div class="text-sm text-gray-500 mt-2">By {{ post.author }} on {{ post.date }}</div>
             </div>
 
-            <div class="post-content mt-6 text-lg text-gray-700">
+            {% if post.image_url %}
+            <div class="w-full max-w-4xl mx-auto p-4">
+                <img 
+                    src="{% static post.image_url %}" 
+                    alt="{{ post.title }}"
+                    loading="lazy"
+                    class="rounded-xl shadow-md w-full max-h-[480px] object-cover object-center transition-transform duration-300 hover:scale-[1.02]"
+                >
+            </div>
+            {% endif %}
+
+            <div class="post-content text-lg text-gray-700 leading-relaxed">
                 <p>{{ post.content }}</p>
             </div>
 
-            <div class="mt-6">
-                <a href="/posts/" class="text-blue-600 hover:text-blue-800">← Back to all posts</a>
+            <div class="px-6 pb-6">
+                <a href="/posts/" class="text-blue-600 hover:text-blue-800 font-medium">← Back to all posts</a>
             </div>
         </div>
     </div>
