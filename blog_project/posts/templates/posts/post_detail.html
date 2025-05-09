@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }} - Blog Post</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+        }
+        .post-card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .post-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        .post-header {
+            background-color: #f5f7ff;
+            padding: 2rem;
+            border-radius: 1rem 1rem 0 0;
+        }
+        .post-content {
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="post-card p-6 mb-8">
+            <div class="post-header rounded-t-lg">
+                <h1 class="text-4xl font-semibold text-indigo-600">{{ post.title }}</h1>
+                <div class="text-sm text-gray-500 mt-2">By {{ post.author }} on {{ post.date }}</div>
+            </div>
+
+            <div class="post-content mt-6 text-lg text-gray-700">
+                <p>{{ post.content }}</p>
+            </div>
+
+            <div class="mt-6">
+                <a href="/posts/" class="text-blue-600 hover:text-blue-800">← Back to all posts</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
