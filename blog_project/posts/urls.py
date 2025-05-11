@@ -4,5 +4,5 @@ from . import views
 urlpatterns = [
     path('', views.post_list, name='post_list'),
     path('<int:post_id>/', views.post_detail, name='post_detail'),
-
+    path('author/<int:author_id>/', views.author_detail, name='author_detail'),  # Updated URL pattern
 ]

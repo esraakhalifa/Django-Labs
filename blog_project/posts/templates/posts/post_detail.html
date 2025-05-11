@@ -30,7 +30,9 @@
         <div class="post-card overflow-hidden">
             <div class="post-header">
                 <h1 class="text-4xl font-semibold text-indigo-600">{{ post.title }}</h1>
-                <div class="text-sm text-gray-500 mt-2">By {{ post.author }} on {{ post.date }}</div>
+                <div class="text-sm text-gray-500 mt-2">
+                    By <a href="{% url 'author_detail' author.id %}" class="text-blue-600 hover:text-blue-800 font-medium">{{ post.author }}</a> on {{ post.date }}
+                </div>
             </div>
 
             {% if post.image_url %}
@@ -52,7 +54,23 @@
                 <a href="/posts/" class="text-blue-600 hover:text-blue-800 font-medium">← Back to all posts</a>
             </div>
         </div>
-    </div>
 
+        <!-- 🗨️ Comments Section -->
+        <div class="mt-10 bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-semibold text-indigo-700 mb-4">Comments</h2>
+            {% if comments %}
+                <ul class="space-y-4">
+                    {% for comment in comments %}
+                    <li class="border-b pb-4">
+                        <p class="text-gray-800"><span class="font-medium">{{ comment.posted_by }}</span> said:</p>
+                        <p class="text-gray-600 mt-1">{{ comment.content }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-gray-500 italic">No comments yet. Be the first to comment!</p>
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>

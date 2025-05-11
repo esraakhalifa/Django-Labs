@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ author.first_name }} {{ author.last_name }} - Author Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .profile-card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .profile-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        .profile-header {
+            background-color: #f5f7ff;
+            padding: 2rem;
+            border-radius: 1rem 1rem 0 0;
+        }
+        .profile-content {
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    {% include 'includes/header.html' %}
+    <div class="container mx-auto px-4 py-8">
+        <div class="profile-card overflow-hidden">
+            <div class="profile-header">
+                <h1 class="text-4xl font-semibold text-indigo-600">{{ author.first_name }} {{ author.last_name }}</h1>
+                <div class="text-sm text-gray-500 mt-2">{{ author.phone_number }}</div>
+                <div class="text-sm text-gray-500 mt-2">{{ author.email }}</div>
+            </div>
+
+            <div class="profile-content text-lg text-gray-700 leading-relaxed">
+                <h2 class="text-2xl font-semibold text-indigo-700 mb-4">About the Author</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula purus ut nulla maximus, sit amet vehicula sapien feugiat. In hac habitasse platea dictumst. Vivamus ullamcorper, felis et suscipit volutpat, nisi felis fringilla orci, a vulputate lorem mi et nunc.</p>
+            </div>
+
+            <div class="px-6 pb-6">
+                <a href="/authors/" class="text-blue-600 hover:text-blue-800 font-medium">← Back to all authors</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
