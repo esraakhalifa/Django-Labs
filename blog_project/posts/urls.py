@@ -1,8 +1,10 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from .views import PostDetail, PostList, AuthorDetail, AuthorsList
+
 
 urlpatterns = [
-    path('', views.post_list, name='post_list'),
-    path('<int:post_id>/', views.post_detail, name='post_detail'),
-    path('author/<int:author_id>/', views.author_detail, name='author_detail'),  # Updated URL pattern
+    path('', PostList.as_view(), name='post_list'),
+    path('<int:post_id>/', PostDetail.as_view(), name='post_detail'),
+    path('author/<int:author_id>/', AuthorDetail.as_view(), name='author_detail'),  # Updated URL pattern
+    path('authors', AuthorsList.as_view(), name='author_list'),
 ]

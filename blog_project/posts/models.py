@@ -7,7 +7,7 @@ class Author(models.Model):
     last_name = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=15)
     email =models.EmailField()
-
+    
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
@@ -19,7 +19,7 @@ class Post(models.Model):
     
     def __str__(self):
         return self.title
-    # class Meta:
+
 
 
 
