@@ -13,7 +13,7 @@ class Author(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
-    image_url = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='posts/',null=True, blank=True)
     content = models.TextField()
     author = models.ForeignKey("Author", on_delete=models.CASCADE, related_name='posts')
     
