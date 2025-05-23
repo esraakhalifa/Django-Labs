@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Post, Author
 import re
+import os
 
 class AuthorSerializer(serializers.ModelSerializer):
     
@@ -23,31 +24,28 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = ['first_name', 'last_name', 'phone_number', 'email']
 
 
-
 class PostSerializer(serializers.ModelSerializer):
-    author=AuthorSerializer()
+    # Show author details as read-only (optional: you can customize this as needed)
+    author = serializers.StringRelatedField(read_only=True)  
+
     class Meta:
         model = Post
-        fields = ['title', 'image_url', 'content', 'author']
-    def create(self, validated_data):
-        author_data = validated_data.pop('author')
-        author, created = Author.objects.get_or_create(**author_data)
-        post = Post.objects.create(author=author,**validated_data)
-        return post
+        fields = ['id','title', 'image', 'content', 'author']
+        read_only_fields = ['author']  # Author is set by the server, not client
+
+    # No need to override create() here
+
     def update(self, instance, validated_data):
-        author_data = validated_data.pop('author', None)
-
-        if author_data:
-            author = instance.author
-            for attr, value in author_data.items():
-                setattr(author, attr, value)
-            author.save()
-
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
-
         return instance
-
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        image_field = instance.image
+        if image_field and not os.path.isfile(image_field.path):
+            # Set image to None if the file is missing
+            data['image'] = None
+        return data
 
    
