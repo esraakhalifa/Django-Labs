@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'django_seed',
+    'rest_framework_simplejwt',
+    
 ]
 
 MIDDLEWARE = [
@@ -140,3 +142,4 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
 
+AUTH_USER_MODEL = 'posts.Author'

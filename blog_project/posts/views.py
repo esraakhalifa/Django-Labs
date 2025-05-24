@@ -3,17 +3,19 @@ from .serializers import PostSerializer, AuthorSerializer
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 # Create your views here.
-
-
-class AuthorsList(generics.ListCreateAPIView):
-    queryset = Author.objects.all()
+class RegisterView(generics.CreateAPIView):
     serializer_class = AuthorSerializer
+    permission_classes = [AllowAny]
 
-# class AuthorDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Author.objects.all()
-#     serializer_class = AuthorSerializer
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
 
 class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
@@ -34,21 +36,12 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-    def update(self, instance, validated_data):
-        new_image = validated_data.get('image', None)
-        if new_image and instance.image:
-            instance.image.delete(save=False)
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        instance.save()
-        return instance
-
-def destroy(self, request, *args, **kwargs):
-    instance = self.get_object()
-    try:
-        if instance.image and hasattr(instance.image, 'path') and os.path.isfile(instance.image.path):
-            instance.image.delete(save=False)
-    except Exception as e:
-        print(f"Failed to delete image file: {e}")
-    instance.delete()
-    return Response(status=status.HTTP_204_NO_CONTENT)
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        try:
+            if instance.image and hasattr(instance.image, 'path') and os.path.isfile(instance.image.path):
+                instance.image.delete(save=False)
+        except Exception as e:
+            print(f"Failed to delete image file: {e}")
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
