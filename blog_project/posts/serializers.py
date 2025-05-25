@@ -7,14 +7,22 @@ import os
 User = get_user_model()
 
 class PostSerializer(serializers.ModelSerializer):
-    author = serializers.StringRelatedField(read_only=True)  
+    author = serializers.SerializerMethodField()  
 
     class Meta:
         model = Post
         fields = ['id','title', 'image', 'content', 'author']
-        read_only_fields = ['author']  # Author is set by the server, not client
 
     # No need to override create() here
+
+    def get_author(self, obj):
+        return {
+            "id": obj.author.id,
+            "username": obj.author.username,
+            "email": obj.author.email,
+            "first_name": obj.author.first_name,
+            "last_name": obj.author.last_name,
+        }
 
     def update(self, instance, validated_data):
         new_image = validated_data.get('image', None)
