@@ -2,11 +2,12 @@ from .models import Author, Post
 from .serializers import PostSerializer, AuthorSerializer
 from rest_framework import generics, permissions
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, filters
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsOwner
 from .tokens import CustomTokenObtainPairSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
 class RegisterView(generics.CreateAPIView):
@@ -26,9 +27,12 @@ class RegisterView(generics.CreateAPIView):
 
 
 class PostList(generics.ListAPIView):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-created_at')  # Default ordering: latest first
     serializer_class = PostSerializer
-    permission_classes = [permissions.AllowAny] 
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['content', 'title', 'author__username']  # use related field
+    ordering_fields = ['created_at']  # allow user-defined ordering by this field
+    permission_classes = [permissions.AllowAny]
 
 class PostCreate(generics.CreateAPIView):
     serializer_class = PostSerializer
@@ -47,10 +51,17 @@ class PostCreate(generics.CreateAPIView):
             print("VALIDATION ERRORS:", serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                
-class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+class PostRetrieveView(generics.RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [AllowAny]
+
+
+class PostUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsOwner]
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         try:
@@ -61,7 +72,6 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer

@@ -12,7 +12,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to='posts/',null=True, blank=True)
     content = models.TextField()
     author = models.ForeignKey("Author", on_delete=models.CASCADE, related_name='posts')
-    
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True) 
     def __str__(self):
         return self.title
 
