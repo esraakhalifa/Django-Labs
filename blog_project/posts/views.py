@@ -4,8 +4,9 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenObtainPairView
 from .permissions import IsOwnerOrReadOnly
+from .tokens import CustomTokenObtainPairSerializer
 
 # Create your views here.
 class RegisterView(generics.CreateAPIView):
@@ -59,3 +60,8 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
             print(f"Failed to delete image file: {e}")
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
