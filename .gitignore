@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore virtual environment folder (env) located alongside your project
+env/
+env/*
+
+# Ignore all Django migrations folders recursively
+**/migrations/
+
+# Ignore media folder (for user-uploaded files)
+media/
+
+# Ignore SQLite database files
+*.sqlite3
+
+# Ignore logs
+*.log
+
+# Ignore compiled C extensions
+*.so
+
+# Ignore editor and IDE files
+.vscode/
+.idea/
+
+# Ignore macOS system files
+.DS_Store
